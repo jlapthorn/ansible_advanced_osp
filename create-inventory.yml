@@ -2,7 +2,5 @@
   connection: local
   become: no
   gather_facts: true
-  vars_files:
-    - ./instances_vars.yml
   roles:
-   - osp-servers
+   - create-inventory

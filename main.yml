@@ -1,0 +1,24 @@
+---
+#- name: Import RHEL image into Openstack
+#  import_playbook: create-image.yaml
+
+#- name: Create Openstack Flavour
+#  import_playbook: create-flavor.yaml
+
+#- name: Create required Security Groups
+#  import_playbook: create-sg.yaml
+
+#- name: Create key Pairs
+#  import_playbook: create-key.yaml
+
+#- name: Create Network infrastructure
+#  import_playbook: create-network.yaml
+
+#- name: Create Openstack Instances
+#  import_playbook: create-instances.yaml
+
+- name: In Memory Inventory
+  import_playbook: create-inventory.yml
+
+- name: Create Three Tier App
+  import_playbook: create-threetier.yml

@@ -1,3 +1,35 @@
----
+- name: Create instances
+  os_server:
+    cloud: openstack
+    name: "{{ item.name }}"
+    image: "{{ item.image }}"
+    key_name: "{{ item.key_name }}"
+    flavor:  "{{ item.flavour }}"
+    security_groups: "{{ item.security_group }}"
+    delete_fip: yes
+    wait: no
+    nics:
+      - net-name: int_network
+    meta: "{{ item.meta }}"
+    userdata: |
+      #!/bin/bash
+      curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
+      cat /tmp/openstack.pub >> /home/cloud-user/.ssh/authorized_keysa
+  loop: "{{ instances_info }}"
 
-# tasks file for osp.servers
+- name: Add floating IP to instance
+  os_floating_ip:
+    cloud: openstack
+    state: present
+    reuse: yes
+    server: "{{ item.name }}"
+    network: "{{ item.floating_ip }}"
+    wait: true
+    timeout: 200
+  loop: "{{ instances_info }}"
+
+
+
+
+#      - { name: 'frontend', image: 'rhel-guest', key_name: 'ansible_key', flavour: 'm2.small', security_group: 'frontend', nics: 'net-name: int_network', floating_ip: 'ext_network', meta: 'group=frontends, deployment_name=QA'}
+
